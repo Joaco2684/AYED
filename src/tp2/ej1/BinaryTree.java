@@ -71,15 +71,12 @@ public class BinaryTree <T> {
 	public boolean hasRightChild() {
 		return this.rightChild!=null;
 	}
-	@Override
+	
 	public String toString() {
 		return this.getData().toString();
 	}
 
 	public  int contarHojas() {
-		if (this.isEmpty()) {
-			return 0;
-		}
 		if (this.isLeaf())	{
 			return 1;
 		}
@@ -91,7 +88,6 @@ public class BinaryTree <T> {
 			suma += this.getRightChild().contarHojas();
 		}
 		return suma;
-		
 	}
 		
 		
@@ -132,6 +128,29 @@ public class BinaryTree <T> {
 			}
 		}
 			
+	}
+	
+	public void imprimirEntreNiveles() {
+		BinaryTree<T> nodo = null;
+		Queue<BinaryTree<T>> cola = new LinkedList<BinaryTree<T>>();
+		
+		cola.add(this);
+		cola.add(null);
+		while (!cola.isEmpty()) {
+			nodo = cola.remove();
+			if (nodo != null) {
+				System.out.println(nodo.getData());
+				if (nodo.hasLeftChild()) {
+					cola.add(nodo.getLeftChild());
+				}
+				if (nodo.hasRightChild()) {
+					cola.add(nodo.getRightChild());
+				}
+			}
+			else if (!cola.isEmpty()) {
+				cola.add(null);
+			}
+		}
 	}
 }
 		
