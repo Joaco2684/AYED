@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import tp1.ej8.Queue;
-import tp3.ej1.GeneralTree;
+import tp3.ej1ej3ej5.GeneralTree;
 
 public class RecorridosAG {
     private GeneralTree<Integer> a;
@@ -82,6 +82,25 @@ public class RecorridosAG {
         return result;
     }
     
+    public List<Integer> PorNiveles(GeneralTree <Integer> a, Integer n) {
+        List<Integer> result = new LinkedList<Integer>();
+        GeneralTree<Integer> aux;
+        Queue<GeneralTree<Integer>> queue = new Queue<GeneralTree<Integer>>();
+        queue.enqueue(a);
+        while(!queue.isEmpty()) {
+            aux = queue.dequeue();
+            if(!aux.isEmpty()) {
+                int dato = aux.getData();
+                result.add(dato);
+            }
+            List<GeneralTree<Integer>> children = aux.getChildren();
+            for(GeneralTree<Integer> child: children) {
+                queue.enqueue(child);
+            }
+        }
+        return result;
+    }
+    
     public static void main(String[] args) {
         GeneralTree<Integer> a1 = new GeneralTree<Integer>(1);
         List<GeneralTree<Integer>> children2 = new LinkedList<GeneralTree<Integer>>();
@@ -103,7 +122,8 @@ public class RecorridosAG {
         System.out.println("PREORDEN:" + a.numerosImparesMayoresQuePreOrden(0));
         System.out.println("INORDEN:" + a.numerosImparesMayoresQueInOrden(0));
         System.out.println("POSTORDEN:" + a.numerosImparesMayoresQuePostOrden(0));
-        System.out.println("POR NIVELES:" + a.numerosImparesMayoresQuePorNiveles(a,0));
+        System.out.println("POR NIVELES:" + rec.PorNiveles(a,0));
+        System.out.print(a.esAncestro(2, 22));
         
         
         

@@ -1,4 +1,4 @@
-package tp3.ej1;
+package tp3.ej1ej3ej5;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -141,27 +141,25 @@ public class GeneralTree<T>{
 	
 	
 	public int nivel(T dato){
-		return nivelHelper(this,dato, 0);
-	  }
-
-	private int nivelHelper(GeneralTree<T> arbol, T dato, int nivel) {
-		if (arbol.isEmpty()) {
-			return -1;
-		}
-		
-		if (arbol.getData() == dato) {
-			return nivel;
-		}
-		
-		for (GeneralTree<T> hijo: arbol.getChildren()) {
-			int nivEncontrado = nivelHelper(hijo,dato,nivel+1);
-			if (nivEncontrado != -1) { //Mientras no se encontró el dato
-				return nivEncontrado;
+		int niv = 0;
+		GeneralTree<T> act;
+		Queue<GeneralTree<T>> cola = new Queue<GeneralTree<T>>();
+		cola.enqueue(this);
+		cola.enqueue(null);
+		while (!cola.isEmpty()) {
+			act = cola.dequeue();
+			if (act != null) {
+				if (act.getData() == dato) return niv;
+				for (GeneralTree<T> hijo: act.getChildren()) {
+					cola.enqueue(hijo);
+				}
+			} else if (!cola.isEmpty()){
+				niv++;
+				cola.enqueue(null);
 			}
 		}
 		
-		return -1; //Si no estaba en ninguno de sus hijos
-		
+		return -1;
 	}
 	
 	public int ancho(){
@@ -188,4 +186,34 @@ public class GeneralTree<T>{
 		}
 		return anchoMax;
 	}
+	
+	public boolean esAncestro(T a, T b) {
+		GeneralTree<T> nodoA = buscarAnc(a,b,this); //Devuelve null si no lo encuentra o está antes b
+		if (nodoA != null) {
+			GeneralTree<T> nodoB = buscarAnc(b,b,nodoA); //Le mando b en lugar de A para que no entre al if de "b antes de a" usado para nodoA
+			if (nodoB!=null) {
+				return true;
+			}
+		}
+		return false;
+		
+	}
+	
+	private GeneralTree<T> buscarAnc(T a,T b, GeneralTree<T> arbol) {
+		GeneralTree<T> act;
+		Queue<GeneralTree<T>> cola = new Queue<GeneralTree<T>>();
+		cola.enqueue(arbol);
+		while (!cola.isEmpty()) {
+			act = cola.dequeue();
+			if (act.getData() == a) return act;
+			if (act.getData() == b) return null;
+			for (GeneralTree<T> hijo: act.getChildren()) {
+				cola.enqueue(hijo);
+			}
+		}
+		return null;
+	}
+	
+	
+	
 }
