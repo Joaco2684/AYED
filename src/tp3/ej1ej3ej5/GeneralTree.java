@@ -108,11 +108,11 @@ public class GeneralTree<T>{
         if(dato %2 != 0 && dato > n) l.add(dato);
     }
     
-    public List<Integer> numerosImparesMayoresQuePorNiveles(GeneralTree <T> a, Integer n) { //Anda mal
+    public List<Integer> numerosImparesMayoresQuePorNiveles( Integer n) { 
         List<Integer> result = new LinkedList<Integer>();
         GeneralTree<T> aux;
         Queue<GeneralTree<T>> queue = new Queue<GeneralTree<T>>();
-        queue.enqueue(a);
+        queue.enqueue(this);
         while(!queue.isEmpty()) {
             aux = queue.dequeue();
             if(!aux.isEmpty()) {
