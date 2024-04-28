@@ -123,7 +123,7 @@ public class RecorridosAG {
         System.out.println("INORDEN:" + a.numerosImparesMayoresQueInOrden(0));
         System.out.println("POSTORDEN:" + a.numerosImparesMayoresQuePostOrden(0));
         System.out.println("POR NIVELES:" + rec.PorNiveles(a,0));
-        System.out.print(a.esAncestro(2, 22));
+        System.out.print(a.esAncestro1(2, 22));
         
         
         

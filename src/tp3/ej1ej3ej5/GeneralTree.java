@@ -187,7 +187,29 @@ public class GeneralTree<T>{
 		return anchoMax;
 	}
 	
-	public boolean esAncestro(T a, T b) {
+	public boolean esAncestro1(T a,T b) {
+		GeneralTree<T> arbol = buscarNodo(a,this);
+		if (arbol != null) {
+			if (buscarNodo(b, arbol) != null) {
+				
+			}
+		} return false;
+	}
+	
+	private GeneralTree<T> buscarNodo(T nodo, GeneralTree<T> arbol) {
+		if (arbol.getData() == nodo) {
+			return arbol;
+		}
+		for (GeneralTree<T> child: arbol.getChildren()) {
+			GeneralTree<T> hijo = buscarNodo(nodo, child);
+			if (hijo != null) {
+				return hijo;
+			}
+		}
+		return null;
+	}
+	
+	public boolean esAncestro2(T a, T b) {
 		GeneralTree<T> nodoA = buscarAnc(a,b,this); //Devuelve null si no lo encuentra o está antes b
 		if (nodoA != null) {
 			GeneralTree<T> nodoB = buscarAnc(b,b,nodoA); //Le mando b en lugar de A para que no entre al if de "b antes de a" usado para nodoA
