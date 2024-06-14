@@ -5,7 +5,6 @@ import java.util.List;
 
 import tp1.ej8.Queue;
 
-
 public class GeneralTree<T>{
 
 	private T data;
@@ -139,6 +138,30 @@ public class GeneralTree<T>{
 		return altMax + 1; //Sumo un nivel
 	}
 	
+	private int nivelHelper(T dato, int nivel) {
+		int flag = -1;
+		if (dato.equals(this.getData())) {
+			return nivel;
+		}
+		for (GeneralTree<T> child: this.getChildren()) {
+			flag = child.nivelHelper(dato, nivel+1);
+			if (flag > -1) {
+				return flag;
+			}
+		}
+		return -1;
+	}
+	
+	public int nivel1(T dato) {
+		if (!this.isEmpty()) {
+			return this.nivelHelper(dato, 0);
+		} else {
+			return -1;
+		}
+	}
+	
+	
+	
 	
 	public int nivel(T dato){
 		int niv = 0;
@@ -162,26 +185,24 @@ public class GeneralTree<T>{
 		return -1;
 	}
 	
-	public int ancho(){
+	public int ancho() {
 		int anchoMax=-1;
-		int cant = 0;
+		int cant=0;
+		Queue<GeneralTree<T>> cola = new Queue<>();
 		GeneralTree<T> act;
-		Queue<GeneralTree<T>> cola = new Queue<GeneralTree<T>>();
 		cola.enqueue(this);
 		cola.enqueue(null);
 		while (!cola.isEmpty()) {
 			act = cola.dequeue();
-			if (act != null) {
-				for (GeneralTree<T> hijo: act.getChildren()) {
-					cola.enqueue(hijo);
-					cant++;
-				}		
-			} else {
-				anchoMax = Math.max(anchoMax, cant);
-				cant = 0;
-				if (!cola.isEmpty()) {
-					cola.enqueue(null);
+			if (act!=null) {
+				cant++;
+				for (GeneralTree<T> child: act.getChildren()) {
+					cola.enqueue(child);
 				}
+			} else if (!cola.isEmpty()){
+				cola.enqueue(null);
+				anchoMax = Math.max(anchoMax,cant);
+				cant=0;
 			}
 		}
 		return anchoMax;
@@ -209,6 +230,33 @@ public class GeneralTree<T>{
 		return null;
 	}
 	
+	private GeneralTree<T> buscarAncestro(T elem, GeneralTree<T> nodo) {
+		if (nodo.getData().equals(elem)) {
+			return nodo;
+		}
+		GeneralTree<T> flag = null;
+		for (GeneralTree<T> child: nodo.getChildren()) {
+			flag = buscarAncestro(elem, child);
+			if (flag != null) {
+				return flag;
+			}
+		}
+		return null;
+	}
+	
+	
+	public boolean esAncestro(T a,T b) {
+		GeneralTree<T> nodoA = buscarAncestro(a,this);
+		if (nodoA!=null) {
+			GeneralTree<T> nodoB = buscarAncestro(b,nodoA);
+			if (nodoB!=null) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
 	public boolean esAncestro2(T a, T b) {
 		GeneralTree<T> nodoA = buscarAnc(a,b,this); //Devuelve null si no lo encuentra o está antes b
 		if (nodoA != null) {
@@ -235,6 +283,27 @@ public class GeneralTree<T>{
 		}
 		return null;
 	}
+	
+	 public List<Integer> numerosePorNiveles() {
+		List<Integer> result = new LinkedList<Integer>();
+	    GeneralTree<T> aux;
+	    Queue<GeneralTree<T>> queue = new Queue<GeneralTree<T>>();
+	    queue.enqueue(this);
+	    queue.enqueue(null);
+        while(!queue.isEmpty()) {
+        	aux = queue.dequeue();
+        	if (aux != null) {
+        		result.add((Integer) aux.getData());
+            	for (GeneralTree<T> child: aux.getChildren()) {
+            		queue.enqueue(child);
+            	}
+            } else if (!queue.isEmpty()) {
+            	result.add(null);
+            	queue.enqueue(null);
+            }
+        }
+        return result;
+	 }
 	
 	
 	
